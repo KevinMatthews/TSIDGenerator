@@ -21,7 +21,8 @@ public class TSIDGenerator {
 	
 	private static final SecureRandom random = new SecureRandom();
 	
-	/*
+	/*   Precondition: idLength is at least 13
+	 * 
 	 *   Returns a new ID, with length specified as an argument, 
 	 *   that has no sequences of 4 characters and no repeated
 	 *   sequences of 4 characters.
