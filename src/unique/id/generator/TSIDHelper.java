@@ -6,7 +6,7 @@ public class TSIDHelper {
 	
 	public static boolean isValid(String inputCode) {
 		
-		if (hasConsecutiveChars(inputCode, 4) || hasRepeatSequence(inputCode, 4)) {
+		if (hasConsecutiveChars(inputCode, 3) || hasRepeatSequence(inputCode, 3)) {
 			return false;
 		}
 		
