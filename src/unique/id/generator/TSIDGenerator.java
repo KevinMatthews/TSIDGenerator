@@ -12,9 +12,7 @@ public class TSIDGenerator {
 	private static AtomicReference<Long> currentTime = new AtomicReference<>(System.currentTimeMillis());
 	
 	private static final String SOURCE_CHARS = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-		
-	private static final int JVM_ID_LENGTH = 2;
-	
+			
 	private static final int NUM_MILLIS = 3;
 	
 	private static final Long YEARS_IN_MILLI = (long) 74003118000000L; // 2345Y, 23D, 21H, 54M (in milliseconds)
@@ -24,17 +22,15 @@ public class TSIDGenerator {
 	/*   Precondition: idLength is at least 13
 	 * 
 	 *   Returns a new ID, with length specified as an argument, 
-	 *   that has no sequences of 4 characters and no repeated
-	 *   sequences of 4 characters.
+	 *   that has no sequences of 3 characters and no repeated
+	 *   sequences of 3 characters.
 	 */
-	public static String nextId(int idLength, boolean multipleMachines) {
-		
-		int machIdLength = (multipleMachines) ? JVM_ID_LENGTH : 0;
-		
+	public static String nextId(int idLength) {
+				
 		String id; 
 		
 		do {
-			id = generateId(idLength, machIdLength);
+			id = generateId(idLength);
 		}
 		while (!TSIDHelper.isValid(id));
 		
@@ -50,14 +46,14 @@ public class TSIDGenerator {
 	 *  consecutive IDs difficult to predict, even if they are generated in
 	 *  consecutive milliseconds.
 	 */
-	private static String generateId(int idLength, int machIdLength) {
+	private static String generateId(int idLength) {
 		
 		String id = nextTimeStampId();
 		
-		id += randomChars(idLength - machIdLength - id.length(), SOURCE_CHARS);
+		id += uniqueMachineId();
 		
-		id += uniqueMachineId(machIdLength);
-		
+		id += randomChars(idLength - id.length(), SOURCE_CHARS);
+				
 		return scramble(id, idLength);
 		
 	}
@@ -101,14 +97,8 @@ public class TSIDGenerator {
 	 *  is left to the user, as implementations will vary depending on the user's Operating
 	 *  System as well as other factors.
 	 */
-	private static String uniqueMachineId(int machIdLength) {
-		String mach_id = "";
-		
-		for (Integer i = 0; i < machIdLength; ++i) {
-			mach_id += i.toString();
-		}
-		
-		return mach_id;
+	private static String uniqueMachineId() {
+		return "";
 	}
 	
 	/*
